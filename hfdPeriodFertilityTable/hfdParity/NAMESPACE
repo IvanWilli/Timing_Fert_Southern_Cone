@@ -1,0 +1,21 @@
+import(
+	stats,
+	hfdCohortFertilityTable,
+	hfdBasicIndicators,
+	hfdLexisManipulation
+)
+
+export(
+	calculateAgeParityDistribution.census,
+	calculateAgeParityDistribution.cumulative,
+	calculateAgeParityDistribution.golden,
+	calculateAgeParityDistribution.register,
+	parity.1Jan.weights,
+	parity.census.weights,
+	parity.prepare.matrix,
+	parity.reformat.weights,
+	parity.unk.redist.allToZero,
+	parity.unk.redist.belowXtoZero,
+	parity.unk.redist.proportional,
+	parity.unk.redist
+)

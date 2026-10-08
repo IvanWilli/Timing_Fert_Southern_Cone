@@ -1,0 +1,20 @@
+Package: hfdCohortFertilityTable
+Type: Package
+Title: Production of Cohort Fertility Tables using the HFD methodology
+Version: 2.0-1077
+Date: 2015-04-26
+Imports: utils
+Depends: abind
+Author: Edward Nash <nash@demogr.mpg.de>
+Maintainer: Edward Nash <edward.nash@gmx.de>
+Description: This package provides a number of functions to enable demographers
+  to calculate Cohort Fertility Tables using the methodology described in the
+  Methods Protocol of the Human Mortality Database
+Copyright: Human Fertility Database project - Max Planck Institute for
+        Demographic Research (Germany) and Vienna Institute of
+        Demography (Austria)
+License: GPL (>= 2.0)
+LazyLoad: yes
+LazyData: yes
+URL: http://www.humanfertility.org
+Packaged: 2015-04-26 13:02:56 UTC; Ed

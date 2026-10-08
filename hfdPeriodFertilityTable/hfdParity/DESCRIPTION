@@ -1,0 +1,22 @@
+Package: hfdParity
+Type: Package
+Title: Functions for producing age/parity weightings from census data
+Version: 2.0-1077
+Date: 2015-04-26
+Author: Edward Nash <nash@demogr.mpg.de>
+Maintainer: Edward Nash <edward.nash@gmx.de>
+Imports: stats
+Depends: hfdCohortFertilityTable, hfdBasicIndicators,
+        hfdLexisManipulation, abind
+Enhances: hfdPeriodFertilityTable
+Description: This package provides functions for producing age/parity weightings on 1st January
+  from census or register data, which may be taken at any time in the year, using methods as described
+  in the Human Fertility Database Methods Protocol. Such weightings are one of the inputs to the
+  production of period fertility tables.
+Copyright: Human Fertility Database project - Max Planck Institute for
+        Demographic Research (Germany) and Vienna Institute of
+        Demography (Austria)
+License: GPL (>= 2.0)
+LazyLoad: yes
+URL: http://www.humanfertility.org
+Packaged: 2015-04-26 13:16:13 UTC; Ed

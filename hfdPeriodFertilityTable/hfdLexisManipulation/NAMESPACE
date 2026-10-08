@@ -1,0 +1,11 @@
+export(
+	aggregateLexisShape,
+	lexisShapePrimaryFactor,
+	lexisShapeSecondaryFactor,
+	onlyObservationsFromAgeOrLess,
+	preprocessLexisTriangles,
+	produceLexisShapes,
+	read.table.hfd,
+	reshapeLexisShapeData,
+	totalColPositionForShape
+)

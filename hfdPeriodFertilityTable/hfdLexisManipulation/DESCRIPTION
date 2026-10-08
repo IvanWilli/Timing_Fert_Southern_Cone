@@ -1,0 +1,16 @@
+Package: hfdLexisManipulation
+Type: Package
+Title: Functions for the handling of data in Lexis shapes
+Version: 2.0-1077
+Date: 2015-04-26
+Author: Edward Nash <nash@demogr.mpg.de>
+Maintainer: Edward Nash <edward.nash@gmx.de>
+Description: This package contains various functions for the handling and manipulation
+  of data arranged in Lexis such as aggregation of triangles to rectangles or parallelograms
+Copyright: Human Fertility Database project - Max Planck Institute for
+        Demographic Research (Germany) and Vienna Institute of
+        Demography (Austria)
+License: GPL (>= 2.0)
+LazyLoad: yes
+URL: http://www.humanfertility.org
+Packaged: 2015-04-26 13:12:28 UTC; Ed

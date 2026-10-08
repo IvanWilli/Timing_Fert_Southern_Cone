@@ -1,0 +1,19 @@
+Package: hfdPeriodFertilityTable
+Type: Package
+Title: Production of period fertility tables using the Human Fertility
+        Database methodology
+Version: 2.0-1077
+Date: 2015-04-26
+Author: Edward Nash <nash@demogr.mpg.de>
+Maintainer: Edward Nash <edward.nash@gmx.de>
+Depends: hfdCohortFertilityTable, hfdParity, abind
+Description: This package provides functions to produce period fertility tables using the methods described
+  in the Human Fertility Database Methods Protocol. Either individual indicators or entire tables may be
+  produced.
+Copyright: Human Fertility Database project - Max Planck Institute for
+        Demographic Research (Germany) and Vienna Institute of
+        Demography (Austria)
+License: GPL (>= 2.0)
+LazyLoad: yes
+URL: http://www.humanfertility.org
+Packaged: 2015-04-26 13:17:31 UTC; Ed

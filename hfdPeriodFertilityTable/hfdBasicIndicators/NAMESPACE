@@ -1,0 +1,14 @@
+import(hfdLexisManipulation)
+
+export(
+	calculate.adjtfr,
+	calculate.asfr,
+	calculate.cbr,
+	calculate.cfr,
+	calculate.mab,
+	calculate.ppr,
+	calculate.sdmab,
+	calculate.tfr,
+	calculate.totbirths,
+	shortname.cfr
+)
