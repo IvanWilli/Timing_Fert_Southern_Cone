@@ -5,11 +5,11 @@ library(colorspace)
 
 # load hfdPeriodFertilityTable (Nash et al., 2011) ----------------------------------------------------------
 
-sapply(list.files("hfdPeriodFertilityTable/hfdLexisManipulation/R", full.names = T), source)
-sapply(list.files("hfdPeriodFertilityTable/hfdBasicIndicators/R", full.names = T), source)
-sapply(list.files("hfdPeriodFertilityTable/hfdCohortFertilityTable/R", full.names = T), source)
-sapply(list.files("hfdPeriodFertilityTable/hfdParity/R", full.names = T), source)
-sapply(list.files("hfdPeriodFertilityTable/hfdPeriodFertilityTable/R", full.names = T), source)
+sapply(list.files("R/hfdPeriodFertilityTable/hfdLexisManipulation/R", full.names = T), source)
+sapply(list.files("R/hfdPeriodFertilityTable/hfdBasicIndicators/R", full.names = T), source)
+sapply(list.files("R/hfdPeriodFertilityTable/hfdCohortFertilityTable/R", full.names = T), source)
+sapply(list.files("R/hfdPeriodFertilityTable/hfdParity/R", full.names = T), source)
+sapply(list.files("R/hfdPeriodFertilityTable/hfdPeriodFertilityTable/R", full.names = T), source)
 
 # Uruguay ------------------------------------------
 # 2011-2021: from Cabella, W., Pardo, I., Pedetti, G., & Fernández-Soto, M. (2024)
@@ -198,9 +198,8 @@ BRAm <- calculate.m.pft (BRABirthsRR, BRAE)
 BRAq <- calculate.q.pft (BRAm)
 BRApft <- calculate.pft(BRABirthsRR, BRAExposRR, BRAgol) 
 
-# save results ----------------------------------------------------------
+# save all results ----------------------------------------------------------
 
-# save all results
 siglas <- c("ARG", "CHL", "BRA", "URY")
 lista_por_pais <- setNames(
   lapply(siglas, function(s) {
@@ -209,90 +208,5 @@ lista_por_pais <- setNames(
   siglas)
 lista_por_pais |> save(file = "outputs/results.rda")
 
-# checks over inputs ------------------------------------------------------------------
-
-# total input births
-table_input_births <- bind_rows(
-  ARGBirthsTR %>% mutate(Country = "ARG"),
-  CHLBirthsTR %>% mutate(Country = "CHL"),
-  BRABirthsTR %>% mutate(Country = "BRA"),
-  URYBirthsTR %>% mutate(Country = "URY")) %>% 
-  summarise(N = sum(Total), .by = c(Country, Year)) %>% 
-  pivot_wider(names_from = Country, values_from = N)
-
-# distribución de nacimientos por orden
-plot_births_order_distribution <- bind_rows(
-  BRABirthsTR %>% 
-    mutate(B1 = as.integer(B1), B2 = as.integer(B2), B3 = as.integer(B3),
-           Country = "BRA") %>% 
-    select(Country, Year, B1, B2, B3) %>% 
-    pivot_longer(B1:B3, names_to = "Parity", values_to = "Births") %>%
-    summarise(Births = sum(Births), .by = c(Parity, Country, Year)) %>% 
-    mutate(pBirths = Births/sum(Births), .by = c(Country, Year)),
-  ARGBirthsTR %>% 
-    mutate(B1 = as.integer(B1), B2 = as.integer(B2), B3 = as.integer(B3),
-           Country = "ARG") %>% 
-    select(Country, Year, B1, B2, B3) %>% 
-    pivot_longer(B1:B3, names_to = "Parity", values_to = "Births") %>%
-    summarise(Births = sum(Births), .by = c(Parity, Country, Year)) %>% 
-    mutate(pBirths = Births/sum(Births), .by = c(Country, Year)),
-  CHLBirthsTR %>% 
-    mutate(B1 = as.integer(B1), B2 = as.integer(B2), B3 = as.integer(B3),
-           Country = "CHL") %>% 
-    select(Country, Year, B1, B2, B3) %>% 
-    pivot_longer(B1:B3, names_to = "Parity", values_to = "Births") %>%
-    summarise(Births = sum(Births), .by = c(Parity, Country, Year)) %>% 
-    mutate(pBirths = Births/sum(Births), .by = c(Country, Year)),
-  URYBirthsTR %>% 
-    mutate(B1 = as.integer(B1), B2 = as.integer(B2), B3 = as.integer(B3),
-           Country = "URY") %>% 
-    select(Country, Year, B1, B2, B3) %>% 
-    pivot_longer(B1:B3, names_to = "Parity", values_to = "Births") %>%
-    summarise(Births = sum(Births), .by = c(Parity, Country, Year)) %>% 
-    mutate(pBirths = Births/sum(Births), .by = c(Country, Year))
-  ) %>% 
-  ggplot(aes(Year, pBirths, fill = Parity)) +
-  geom_area() +
-  ggtitle("Distr de nacs por orden") +
-  facet_wrap(~Country)
-
-# tfr implicit in input data
-plot_tfr <- bind_rows(
-  ARGtfr %>% select(Year, TFR) %>% mutate(País = "ARG"),
-  CHLtfr %>% select(Year, TFR) %>% mutate(País = "CHL"),
-  URYtfr %>% select(Year, TFR) %>% mutate(País = "URY"),
-  BRAtfr %>% select(Year, TFR) %>% mutate(País = "BRA")) %>%
-  filter(Year %in% 2010:2023) %>%
-  ggplot(aes(Year, TFR, col = País, group = País)) + geom_line()+
-  ggtitle("TFR. Input data for countries") +
-  theme_bw(base_size = 13)
-
-# censal parity distribution by age
-plot_censal_parity <- bind_rows(
-  URYparity %>% mutate(Age = as.integer(Age), PopName = "URY 2011"),
-  CHLparity %>% mutate(Age = as.integer(Age), PopName = "CHL 2017"),
-  ARGparity %>% mutate(Age = as.integer(Age), PopName = "ARG 2010"),
-  BRAparity %>% mutate(Age = as.integer(Age), PopName = "BRA 2010")) %>% 
-  select(PopName, Age, Parity, Population) %>% 
-  mutate(Parity = pmin(3, Parity)) %>% 
-  summarise(pop = sum(Population, na.rm = T), .by = c(PopName, Age, Parity)) %>% 
-  mutate(distr = pop/sum(pop), .by = c(c(PopName, Age))) %>% 
-  ggplot(aes(Age, distr, col = PopName)) +
-  geom_line() + labs(col = "País") +
-  facet_wrap(~Parity) +
-  theme_bw(base_size = 13) +
-  ggtitle("Age distribution of parity. Census data for countries") 
-
-# save
-ggsave("outputs/plots/plot_censal_parity.png",
-  plot_censal_parity, width = 13, height = 10, dpi = 300)
-ggsave("outputs/plots/plot_tfr.png",
-  plot_tfr, width = 13, height = 10, dpi = 300)
-ggsave("outputs/plots/plot_births_order_distribution.png",
-  plot_births_order_distribution, width = 13, height = 10, dpi = 300)
-
-# check parity distribution with arrived census -----------------------------------------------
-
-source("others/Graficos estimación Vs censo.R")
 
 
