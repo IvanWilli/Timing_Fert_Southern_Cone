@@ -4,6 +4,9 @@ library(tidyverse)
 library(colorspace)
 library(plotly)
 
+# results
+load("outputs/results.rda")
+
 # Figure 1: rates comparison between conditioned and not --------------------------------------
 
 data_cond_uncond_rates <- bind_rows(
@@ -161,8 +164,12 @@ age_cv_data <- bind_rows(
 
 # plot
 b_not_t_limits <- range(age_cv_data$value[age_cv_data$name == "B" & age_cv_data$Orden != "T"], na.rm = TRUE)
-edad_media_limits <- range(age_cv_data$value[age_cv_data$name == "  Mean Age"], na.rm = TRUE)
-cv_limits <- range(age_cv_data$value[age_cv_data$name == " CV"], na.rm = TRUE)
+edad_media_limits <- with(
+  subset(age_cv_data, Year >= 1980 & trimws(name) == "Mean Age"),
+  range(value, na.rm = TRUE))
+cv_limits <- with(
+  subset(age_cv_data, Year >= 1980 & trimws(name) == "CV"),
+  range(value, na.rm = TRUE))
 plot_HFD_mean_age_cv_B <- age_cv_data %>% 
   filter(Year >= 1980) |> 
   ggplot(aes(Year, value)) +
@@ -175,15 +182,20 @@ plot_HFD_mean_age_cv_B <- age_cv_data %>%
   labs(y = "", x = "Year", col = "Country") +
   scale_color_manual(values = c("#598af5", "#71d110", "#fc634f", "#6fffff")) +
   ggh4x::facet_grid2(
-    rows = vars(name), cols = vars(Orden),
-    scales = "free_y", independent = "y", switch = "y") +
+    rows = vars(name),
+    cols = vars(Orden),
+    scales = "free_y",
+    independent = "y",
+    switch = "y"
+  ) +
   ggh4x::facetted_pos_scales(
     y = list(
-      name == "B" & Orden != "T" ~ scale_y_continuous(limits = b_not_t_limits),
-      name == " Mean Age" ~ scale_y_continuous(limits = edad_media_limits),
-      name == "CV" ~ scale_y_continuous(limits = cv_limits))
+      trimws(name) == "Mean Age" ~
+        scale_y_continuous(limits = edad_media_limits),
+      trimws(name) == "CV" ~
+        scale_y_continuous(limits = cv_limits)
+    )
   )
-
 ggsave("outputs/plots/plot_HFD_mean_age_cv_B.png",
   plot_HFD_mean_age_cv_B, width = 13, height = 10, dpi = 300)
 
